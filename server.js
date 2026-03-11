@@ -42,5 +42,7 @@ app.get('/health', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on ${process.env.BASE_URL || `http://localhost:${PORT}`}`);
+  console.log(`📸 Screenshot interval: ${(parseInt(process.env.SCREENSHOT_INTERVAL) || 15000) / 1000}s`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
 });

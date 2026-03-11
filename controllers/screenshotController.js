@@ -36,7 +36,12 @@ exports.createScreenshotJob = async (req, res) => {
       screenshotPath
     });
 
-    const apiUrl = `${req.protocol}://${req.get('host')}/api/image/${jobId}`;
+    // Use BASE_URL from environment variable
+    const baseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+    const apiUrl = `${baseUrl}/api/image/${jobId}`;
+    
+    // Get interval from env
+    const intervalSeconds = (parseInt(process.env.SCREENSHOT_INTERVAL) || 15000) / 1000;
 
     res.json({
       success: true,
@@ -44,7 +49,7 @@ exports.createScreenshotJob = async (req, res) => {
       url,
       mode,
       apiUrl,
-      message: 'Screenshot job created. Screenshots will update every 15 seconds with 7s page load wait.',
+      message: `Screenshot job created. Screenshots will update every ${intervalSeconds} seconds with 7s page load wait.`,
       usage: `Use this URL in your GitHub README: ![Live Screenshot](${apiUrl})`
     });
   } catch (error) {
